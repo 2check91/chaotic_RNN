@@ -26,8 +26,8 @@ def train(data):
 
     Returns
     -------
-    model :
-    train_out :
+    model : trained RNN model
+    train_out : output of RNN during training phase
     """
     network_size = 1000
     input_size = 0
@@ -38,7 +38,7 @@ def train(data):
     time_step = 1e-3
 
     learn_rate_init = 0.001
-    t_avg = 3e-3
+    t_avg = 2e-3
     decay_const = 20
 
     reservoir = ReservoirNodes(input_size, data.shape[1], network_size,
@@ -46,29 +46,36 @@ def train(data):
                                noise_level, time_step)
     trainer = EHRule(reservoir, learn_rate_init, t_avg, decay_const)
 
-    model, train_out = trainer.train(data)
+    model, train_out = trainer.train(data, 1)
 
     return model, train_out
 
 
-def test(testTime, model):
-    out_test = model.simulateNoInput(int(testTime))
+def test(N, model):
+    """Generate RNN output
+    Parameters
+    ----------
+    N: integer
+          Number of samples to be generated
+    model: FeedbackNet object
+          RNN model
+
+    Returns
+    -------
+    model : trained RNN model
+    output : output of RNN model of size N
+    """
+    out_test = model.simulateNoInput(int(N))
 
     return out_test
 
 
 def driver():
-    #load data and initialize variables
     data = loadmat('filtered_data.mat')
-    print type(data)
-    print type(data['jointTrajFilt'])
-    print data['jointTrajFilt'].shape[1]
-    #trainTime = 0.9*data['jointTrajFilt'].shape[0]
-    #testTime = 0.1*data['jointTrajFilt'].shape[0]
-    trainTime  = 10000
-    testTime = 500
-    numOfJoints = 3
-    rms = zeros(numOfJoints)
+
+    trainTime  = 20000
+    testTime = 1000
+    numOfJoints = 1
 
     # train model
     model, out_train = train(data['jointTrajFilt'][0:trainTime, 0:numOfJoints])
@@ -79,14 +86,17 @@ def driver():
     out_test = test(testTime, model)
 
     """# RMS
+    rms = zeros(numOfJoints)
     for i in range(0, numOfJoints):
         rms[i] = sqrt(((out_test[:,i] - data['jointTrajFilt'][trainTime:trainTime+testTime,i] ) ** 2).mean())
     print (rms)"""
 
-
+    # visualize output
     plt.figure(1)
+    # RNN output during training phase
     plt.plot(out_train, 'r', data['jointTrajFilt'][0:trainTime-1,0], 'g')
     plt.figure(2)
+    # RNN output
     plt.plot(out_test, 'r', data['jointTrajFilt'][trainTime:trainTime+testTime,0], 'g')
     plt.show()
 

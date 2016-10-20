@@ -1,8 +1,23 @@
+"""RNN model."""
+
 import numpy as np
 
 class FeedbackNet:
+"""Create RNN model."""
 
     def __init__(self, reservoir, weights, noise_level):
+        """
+        Parameters
+        ----------
+        reservoir : ReservoirNodes
+            Reservoir node with leaky integrator neurons.
+
+        weights : numpy.ndarray, shape = [number of neurons, number of readout neurons]
+            Output synapes weights
+
+        noise_level : float
+            Noise in the firing rate of readout neurons, from a uniform distribution in the interval [-0.5 0.5]
+        """        
         self.res = reservoir
         self.weights = weights
         self.noise_level = 2 * noise_level
@@ -23,6 +38,17 @@ class FeedbackNet:
         return out
 
     def simulateNoInput(self, steps):
+        """Generate RNN model output.
+        Parameters
+        ----------
+        steps : int
+            Number of samples to generate.
+
+        Returns
+        -------
+        out : numpy.ndarray shape = [number of samples, number of readout neurons]
+            RNN output.
+        """
         out = np.zeros((steps, self.__outsize))
 
         for k in xrange(0, steps):

@@ -64,7 +64,6 @@ class ReservoirNodes:
 
     def simulate(self, z, inp=None):
         """Simulate RNN dynamics.
-
         Parameters
         ----------
         z : numpy.ndarray
@@ -79,7 +78,6 @@ class ReservoirNodes:
             Previous output.
 
         """
-
         if inp is None:
             self.__states = ((1 - self.time_step / self.__time_const) * \
                              self.__states + \

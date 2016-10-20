@@ -7,13 +7,12 @@ from FeedbackNet import FeedbackNet
 
 
 class EHRule:
-    """sdfsdf."""
+    """Create object for RNN training."""
 
     def __init__(self, reservoir, learn_rate_init, t_avg, decay_const):
 		"""
 		Parameters
 		----------
-
 		reservoir : ReservoirNodes
 			Reservoir node with leaky integrator neurons.
 
@@ -34,7 +33,17 @@ class EHRule:
     def train(self, output, step, inp=None):
 		"""Train RNN.
 		Parameters:
-		"""
+	    output: numpy.ndarray, shape = [number of samples, number of readout neurons]
+          Data to train RNN
+        step: float
+          sampling step for training data
+        inp: ***not implemented yet (used for controlling output pattern)***
+
+    	Returns
+    	-------
+    	model : trained RNN model
+    	out : output of RNN during training phase
+    	"""
 		alpha = 1 - self.__res.time_step / self.__t_avg
 		out_size = output.shape[1]
 		weights_out = np.zeros((self.__res.network_size, out_size))
