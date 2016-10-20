@@ -5,6 +5,7 @@ Implementation of RNN model described in "Generating Coherent Patterns of Activi
 
 To obtain correct output, change following in **scipy/sparse/construct.py**:
 
+use  
 vals = random_state.randn(k).astype(dtype) *# returns a sample from the “standard normal” distribution*  
-instead of
+instead of  
 vals = random_state.rand(k).astype(dtype) *#  returns a sample from a uniform distribution over [0, 1)*
