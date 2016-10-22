@@ -3,9 +3,3 @@ Implementation of RNN model described in "Generating Coherent Patterns of Activi
 
 **filtered_data.mat** is obtained from VRep Robotics simulator (Asimo robot). Smoothing using moving average filter was applied to data. 
 
-To obtain correct output, change following in **scipy/sparse/construct.py**:
-
-use  
-vals = random_state.randn(k).astype(dtype) *# returns a sample from the “standard normal” distribution*  
-instead of  
-vals = random_state.rand(k).astype(dtype) *#  returns a sample from a uniform distribution over [0, 1)*
